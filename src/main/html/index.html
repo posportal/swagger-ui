@@ -19,6 +19,10 @@
   <script src='swagger-ui.js' type='text/javascript'></script>
   <script src='lib/highlight.7.3.pack.js' type='text/javascript'></script>
   <script src='lib/marked.js' type='text/javascript'></script>
+  <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha256.js"></script>
+  <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha256.js"></script>
+  <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/components/enc-base64-min.js"></script>
+
 
   <!-- enabling this will enable oauth2 implicit scope support -->
   <script src='lib/swagger-oauth.js' type='text/javascript'></script>
@@ -28,7 +32,7 @@
       if (url && url.length > 1) {
         url = decodeURIComponent(url[1]);
       } else {
-        url = "http://petstore.swagger.io/v2/swagger.json";
+        url = "http://wappi50.posportal.com:6080/swagger.json";
       }
       window.swaggerUi = new SwaggerUi({
         url: url,
@@ -55,17 +59,10 @@
         sorter : "alpha"
       });
 
-      function addApiKeyAuthorization() {
-        var key = $('#input_apiKey')[0].value;
-        log("key: " + key);
-        if(key && key.trim() != "") {
-            log("added key " + key);
-            window.authorizations.add("api_key", new ApiKeyAuthorization("api_key", key, "query"));
-        }
-      }
 
       $('#input_apiKey').change(function() {
-        addApiKeyAuthorization();
+      });
+      $('#input_crKey').change(function() {
       });
 
       // if you have an apiKey you would like to pre-populate on the page for demonstration purposes...
@@ -86,7 +83,8 @@
     <a id="logo" href="http://swagger.io">swagger</a>
     <form id='api_selector'>
       <div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>
-      <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div>
+      <div class='input'><input placeholder="API Key" id="input_apiKey" name="apiKey" type="text"/></div>
+      <div class='input'><input placeholder="Crypto Key" id="input_crKey" name="crKey" type="password"/></div>
       <div class='input'><a id="explore" href="#">Explore</a></div>
     </form>
   </div>

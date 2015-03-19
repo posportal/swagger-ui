@@ -3081,6 +3081,7 @@ var JQueryHttpClient = function(options) {
 };
 
 JQueryHttpClient.prototype.execute = function(obj) {
+
   var cb = obj.on;
   var request = obj;
 
@@ -3088,7 +3089,6 @@ JQueryHttpClient.prototype.execute = function(obj) {
   obj.cache = false;
   delete obj.useJQuery;
 
-  /*
   obj.beforeSend = function(xhr) {
     var key, results;
     if (obj.headers) {
@@ -3104,7 +3104,7 @@ JQueryHttpClient.prototype.execute = function(obj) {
       }
       return results;
     }
-  };*/
+  };
 
   obj.data = obj.body;
   delete obj.body;
@@ -3182,6 +3182,43 @@ ShredHttpClient.prototype.initShred = function () {
   this.isInitialized = true;
   this.registerProcessors(this.shred);
 };
+ShredHttpClient.prototype.addHmac = function(obj) {
+    var defApikey = "Admin";
+    var defSecret = "123";
+
+    var apiKey = $('#input_apiKey').val();
+    var secret = $('#input_crKey').val();
+    if (!apiKey)
+    {
+        apiKey = defApikey;
+    }
+    if (!secret)
+    {
+        secret = defSecret;
+    }
+
+    var timestamp = new Date().toISOString();
+    var hashedEntity = "";
+    if (obj.body != null)
+    {
+        hashedEntity = CryptoJS.SHA256(obj.body);
+    }
+    else
+    {
+        hashedEntity = "";
+    }
+    var contentType = obj.headers.contentType;
+    if (contentType == null)
+    {
+        contentType = "";
+    }
+
+    var hmacInput = obj.method + "\n" + contentType + "\n" + hashedEntity + "\n" + timestamp + "\n" + obj.url;
+    var hmacOutput = CryptoJS.HmacSHA256(hmacInput, secret);
+    obj.headers.Authorization = apiKey + ":" + hmacOutput.toString(CryptoJS.enc.Base64);
+    obj.headers.Timestamp = timestamp;
+
+}
 
 ShredHttpClient.prototype.registerProcessors = function(shred) {
   var identity = function(x) {
@@ -3205,6 +3242,7 @@ ShredHttpClient.prototype.registerProcessors = function(shred) {
 };
 
 ShredHttpClient.prototype.execute = function(obj) {
+   this.addHmac(obj);
   if(!this.isInitialized)
     this.initShred();
 
