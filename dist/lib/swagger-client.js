@@ -3186,8 +3186,8 @@ ShredHttpClient.prototype.addHmac = function(obj) {
     var defApikey = "Admin";
     var defSecret = "123";
 
-    var apiKey = $('#input_apiKey').val();
-    var secret = $('#input_crKey').val();
+    var apiKey = jQuery('#input_apiKey').val();
+    var secret = jQuery('#input_crKey').val();
     if (!apiKey)
     {
         apiKey = defApikey;

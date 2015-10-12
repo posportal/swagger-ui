@@ -4,49 +4,52 @@
  * @link http://swagger.io
  * @license Apache 2.0
  */
-$(function() {
+ 
+//$ = jQuery.noConflict(true); 
+ 
+jQuery(function() {
 
 	// Helper function for vertically aligning DOM elements
 	// http://www.seodenver.com/simple-vertical-align-plugin-for-jquery/
-	$.fn.vAlign = function() {
+	jQuery.fn.vAlign = function() {
 		return this.each(function(i){
-		var ah = $(this).height();
-		var ph = $(this).parent().height();
+		var ah = jQuery(this).height();
+		var ph = jQuery(this).parent().height();
 		var mh = (ph - ah) / 2;
-		$(this).css('margin-top', mh);
+		jQuery(this).css('margin-top', mh);
 		});
 	};
 
-	$.fn.stretchFormtasticInputWidthToParent = function() {
+	jQuery.fn.stretchFormtasticInputWidthToParent = function() {
 		return this.each(function(i){
-		var p_width = $(this).closest("form").innerWidth();
-		var p_padding = parseInt($(this).closest("form").css('padding-left') ,10) + parseInt($(this).closest("form").css('padding-right'), 10);
-		var this_padding = parseInt($(this).css('padding-left'), 10) + parseInt($(this).css('padding-right'), 10);
-		$(this).css('width', p_width - p_padding - this_padding);
+		var p_width = jQuery(this).closest("form").innerWidth();
+		var p_padding = parseInt(jQuery(this).closest("form").css('padding-left') ,10) + parseInt(jQuery(this).closest("form").css('padding-right'), 10);
+		var this_padding = parseInt(jQuery(this).css('padding-left'), 10) + parseInt(jQuery(this).css('padding-right'), 10);
+		jQuery(this).css('width', p_width - p_padding - this_padding);
 		});
 	};
 
-	$('form.formtastic li.string input, form.formtastic textarea').stretchFormtasticInputWidthToParent();
+	jQuery('form.formtastic li.string input, form.formtastic textarea').stretchFormtasticInputWidthToParent();
 
 	// Vertically center these paragraphs
 	// Parent may need a min-height for this to work..
-	$('ul.downplayed li div.content p').vAlign();
+	jQuery('ul.downplayed li div.content p').vAlign();
 
 	// When a sandbox form is submitted..
-	$("form.sandbox").submit(function(){
+	jQuery("form.sandbox").submit(function(){
 
 		var error_free = true;
 
 		// Cycle through the forms required inputs
- 		$(this).find("input.required").each(function() {
+ 		jQuery(this).find("input.required").each(function() {
 
 			// Remove any existing error styles from the input
-			$(this).removeClass('error');
+			jQuery(this).removeClass('error');
 
 			// Tack the error style on if the input is empty..
-			if ($(this).val() == '') {
-				$(this).addClass('error');
-				$(this).wiggle();
+			if (jQuery(this).val() == '') {
+				jQuery(this).addClass('error');
+				jQuery(this).wiggle();
 				error_free = false;
 			}
 
@@ -58,9 +61,9 @@ $(function() {
 });
 
 function clippyCopiedCallback(a) {
-  $('#api_key_copied').fadeIn().delay(1000).fadeOut();
+  jQuery('#api_key_copied').fadeIn().delay(1000).fadeOut();
 
-  // var b = $("#clippy_tooltip_" + a);
+  // var b = jQuery("#clippy_tooltip_" + a);
   // b.length != 0 && (b.attr("title", "copied!").trigger("tipsy.reload"), setTimeout(function() {
   //   b.attr("title", "copy to clipboard")
   // },
@@ -91,7 +94,7 @@ var Docs = {
 
 		// If shebang has an operation nickname in it..
 		// e.g. /docs/#!/words/get_search
-		var fragments = $.param.fragment().split('/');
+		var fragments = jQuery.param.fragment().split('/');
 		fragments.shift(); // get rid of the bang
 
 		switch (fragments.length) {
@@ -100,29 +103,29 @@ var Docs = {
 				var dom_id = 'resource_' + fragments[0];
 
 				Docs.expandEndpointListForResource(fragments[0]);
-				$("#"+dom_id).slideto({highlight: false});
+				jQuery("#"+dom_id).slideto({highlight: false});
 				break;
 			case 2:
 				// Refer to the endpoint DOM element, e.g. #words_get_search
 
         // Expand Resource
         Docs.expandEndpointListForResource(fragments[0]);
-        $("#"+dom_id).slideto({highlight: false});
+        jQuery("#"+dom_id).slideto({highlight: false});
 
         // Expand operation
 				var li_dom_id = fragments.join('_');
 				var li_content_dom_id = li_dom_id + "_content";
 
 
-				Docs.expandOperation($('#'+li_content_dom_id));
-				$('#'+li_dom_id).slideto({highlight: false});
+				Docs.expandOperation(jQuery('#'+li_content_dom_id));
+				jQuery('#'+li_dom_id).slideto({highlight: false});
 				break;
 		}
 
 	},
 
 	toggleEndpointListForResource: function(resource) {
-		var elem = $('li#resource_' + Docs.escapeResourceName(resource) + ' ul.endpoints');
+		var elem = jQuery('li#resource_' + Docs.escapeResourceName(resource) + ' ul.endpoints');
 		if (elem.is(':visible')) {
 			Docs.collapseEndpointListForResource(resource);
 		} else {
@@ -134,13 +137,13 @@ var Docs = {
 	expandEndpointListForResource: function(resource) {
 		var resource = Docs.escapeResourceName(resource);
 		if (resource == '') {
-			$('.resource ul.endpoints').slideDown();
+			jQuery('.resource ul.endpoints').slideDown();
 			return;
 		}
 		
-		$('li#resource_' + resource).addClass('active');
+		jQuery('li#resource_' + resource).addClass('active');
 
-		var elem = $('li#resource_' + resource + ' ul.endpoints');
+		var elem = jQuery('li#resource_' + resource + ' ul.endpoints');
 		elem.slideDown();
 	},
 
@@ -148,13 +151,13 @@ var Docs = {
 	collapseEndpointListForResource: function(resource) {
 		var resource = Docs.escapeResourceName(resource);
 		if (resource == '') {
-			$('.resource ul.endpoints').slideUp();
+			jQuery('.resource ul.endpoints').slideUp();
 			return;
 		}
 
-		$('li#resource_' + resource).removeClass('active');
+		jQuery('li#resource_' + resource).removeClass('active');
 
-		var elem = $('li#resource_' + resource + ' ul.endpoints');
+		var elem = jQuery('li#resource_' + resource + ' ul.endpoints');
 		elem.slideUp();
 	},
 
@@ -163,12 +166,12 @@ var Docs = {
 		Docs.expandEndpointListForResource(resource);
 		
 		if (resource == '') {
-			$('.resource ul.endpoints li.operation div.content').slideDown();
+			jQuery('.resource ul.endpoints li.operation div.content').slideDown();
 			return;
 		}
 
-		$('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
-			Docs.expandOperation($(this));
+		jQuery('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
+			Docs.expandOperation(jQuery(this));
 		});
 	},
 
@@ -177,12 +180,12 @@ var Docs = {
 		Docs.expandEndpointListForResource(resource);
 
 		if (resource == '') {
-			$('.resource ul.endpoints li.operation div.content').slideUp();
+			jQuery('.resource ul.endpoints li.operation div.content').slideUp();
 			return;
 		}
 
-		$('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
-			Docs.collapseOperation($(this));
+		jQuery('li#resource_' + Docs.escapeResourceName(resource) + ' li.operation div.content').each(function() {
+			Docs.collapseOperation(jQuery(this));
 		});
 	},
 
@@ -231,8 +234,8 @@ SwaggerUi = (function(superClass) {
     if (options.supportedSubmitMethods == null) {
       options.supportedSubmitMethods = ['get', 'put', 'post', 'delete', 'head', 'options', 'patch'];
     }
-    if ($('#' + this.dom_id) == null) {
-      $('body').append('<div id="' + this.dom_id + '"></div>');
+    if (jQuery('#' + this.dom_id) == null) {
+      jQuery('body').append('<div id="' + this.dom_id + '"></div>');
     }
     this.options = options;
     this.options.success = (function(_this) {
@@ -251,7 +254,7 @@ SwaggerUi = (function(superClass) {
       };
     })(this);
     this.headerView = new HeaderView({
-      el: $('#header')
+      el: jQuery('#header')
     });
     return this.headerView.on('update-swagger-ui', (function(_this) {
       return function(data) {
@@ -303,7 +306,7 @@ SwaggerUi = (function(superClass) {
     this.showMessage('Finished Loading Resource Information. Rendering Swagger UI...');
     this.mainView = new MainView({
       model: this.api,
-      el: $('#' + this.dom_id),
+      el: jQuery('#' + this.dom_id),
       swaggerOptions: this.options
     }).render();
     this.showMessage();
@@ -351,9 +354,9 @@ SwaggerUi = (function(superClass) {
     if (data == null) {
       data = '';
     }
-    $('#message-bar').removeClass('message-fail');
-    $('#message-bar').addClass('message-success');
-    return $('#message-bar').html(data);
+    jQuery('#message-bar').removeClass('message-fail');
+    jQuery('#message-bar').addClass('message-success');
+    return jQuery('#message-bar').html(data);
   };
 
   SwaggerUi.prototype.onLoadFailure = function(data) {
@@ -361,9 +364,9 @@ SwaggerUi = (function(superClass) {
     if (data == null) {
       data = '';
     }
-    $('#message-bar').removeClass('message-success');
-    $('#message-bar').addClass('message-fail');
-    val = $('#message-bar').html(data);
+    jQuery('#message-bar').removeClass('message-success');
+    jQuery('#message-bar').addClass('message-fail');
+    val = jQuery('#message-bar').html(data);
     if (this.options.onFailure != null) {
       this.options.onFailure(data);
     }
@@ -374,8 +377,8 @@ SwaggerUi = (function(superClass) {
     if (data == null) {
       data = '';
     }
-    return $('.markdown').each(function(index) {
-      return $(this).html(marked($(this).html()));
+    return jQuery('.markdown').each(function(index) {
+      return jQuery(this).html(marked(jQuery(this).html()));
     });
   };
 
@@ -418,7 +421,7 @@ ApiKeyButton = (function(superClass) {
   ApiKeyButton.prototype.render = function() {
     var template;
     template = this.template();
-    $(this.el).html(template(this.model));
+    jQuery(this.el).html(template(this.model));
     return this;
   };
 
@@ -429,19 +432,19 @@ ApiKeyButton = (function(superClass) {
 
   ApiKeyButton.prototype.applyApiKey = function() {
     var elem;
-    window.authorizations.add(this.model.name, new ApiKeyAuthorization(this.model.name, $("#input_apiKey_entry").val(), this.model["in"]));
+    window.authorizations.add(this.model.name, new ApiKeyAuthorization(this.model.name, jQuery("#input_apiKey_entry").val(), this.model["in"]));
     window.swaggerUi.load();
-    return elem = $('#apikey_container').show();
+    return elem = jQuery('#apikey_container').show();
   };
 
   ApiKeyButton.prototype.toggleApiKeyContainer = function() {
     var elem;
-    if ($('#apikey_container').length > 0) {
-      elem = $('#apikey_container').first();
+    if (jQuery('#apikey_container').length > 0) {
+      elem = jQuery('#apikey_container').first();
       if (elem.is(':visible')) {
         return elem.hide();
       } else {
-        $('.auth_container').hide();
+        jQuery('.auth_container').hide();
         return elem.show();
       }
     }
@@ -492,7 +495,7 @@ BasicAuthButton = (function(superClass) {
   BasicAuthButton.prototype.render = function() {
     var template;
     template = this.template();
-    $(this.el).html(template(this.model));
+    jQuery(this.el).html(template(this.model));
     return this;
   };
 
@@ -503,21 +506,21 @@ BasicAuthButton = (function(superClass) {
 
   BasicAuthButton.prototype.applyPassword = function() {
     var elem, password, username;
-    username = $(".input_username").val();
-    password = $(".input_password").val();
+    username = jQuery(".input_username").val();
+    password = jQuery(".input_password").val();
     window.authorizations.add(this.model.type, new PasswordAuthorization("basic", username, password));
     window.swaggerUi.load();
-    return elem = $('#basic_auth_container').hide();
+    return elem = jQuery('#basic_auth_container').hide();
   };
 
   BasicAuthButton.prototype.togglePasswordContainer = function() {
     var elem;
-    if ($('#basic_auth_container').length > 0) {
-      elem = $('#basic_auth_container').show();
+    if (jQuery('#basic_auth_container').length > 0) {
+      elem = jQuery('#basic_auth_container').show();
       if (elem.is(':visible')) {
         return elem.slideUp();
       } else {
-        $('.auth_container').hide();
+        jQuery('.auth_container').hide();
         return elem.show();
       }
     }
@@ -632,8 +635,8 @@ ContentTypeView = (function(superClass) {
   ContentTypeView.prototype.render = function() {
     var template;
     template = this.template();
-    $(this.el).html(template(this.model));
-    $('label[for=contentType]', $(this.el)).text('Response Content Type');
+    jQuery(this.el).html(template(this.model));
+    jQuery('label[for=contentType]', jQuery(this.el)).text('Response Content Type');
     return this;
   };
 
@@ -788,8 +791,8 @@ HeaderView = (function(superClass) {
       e.preventDefault();
     }
     return this.trigger('update-swagger-ui', {
-      url: $('#input_baseUrl').val(),
-      apiKey: $('#input_apiKey').val()
+      url: jQuery('#input_baseUrl').val(),
+      apiKey: jQuery('#input_apiKey').val()
     });
   };
 
@@ -797,7 +800,7 @@ HeaderView = (function(superClass) {
     if (trigger == null) {
       trigger = false;
     }
-    $('#input_baseUrl').val(url);
+    jQuery('#input_baseUrl').val(url);
     if (trigger) {
       return this.trigger('update-swagger-ui', {
         url: url
@@ -926,21 +929,21 @@ MainView = (function(superClass) {
     if (this.model.securityDefinitions) {
       for (name in this.model.securityDefinitions) {
         auth = this.model.securityDefinitions[name];
-        if (auth.type === "apiKey" && $("#apikey_button").length === 0) {
+        if (auth.type === "apiKey" && jQuery("#apikey_button").length === 0) {
           button = new ApiKeyButton({
             model: auth
           }).render().el;
-          $('.auth_main_container').append(button);
+          jQuery('.auth_main_container').append(button);
         }
-        if (auth.type === "basicAuth" && $("#basic_auth_button").length === 0) {
+        if (auth.type === "basicAuth" && jQuery("#basic_auth_button").length === 0) {
           button = new BasicAuthButton({
             model: auth
           }).render().el;
-          $('.auth_main_container').append(button);
+          jQuery('.auth_main_container').append(button);
         }
       }
     }
-    $(this.el).html(Handlebars.templates.main(this.model));
+    jQuery(this.el).html(Handlebars.templates.main(this.model));
     resources = {};
     counter = 0;
     ref = this.model.apisArray;
@@ -955,10 +958,10 @@ MainView = (function(superClass) {
       resources[id] = resource;
       this.addResource(resource, this.model.auths);
     }
-    $('.propWrap').hover(function() {
-      return $('.optionsWrapper', $(this)).show();
+    jQuery('.propWrap').hover(function() {
+      return jQuery('.optionsWrapper', jQuery(this)).show();
     }, function() {
-      return $('.optionsWrapper', $(this)).hide();
+      return jQuery('.optionsWrapper', jQuery(this)).hide();
     });
     return this;
   };
@@ -974,11 +977,11 @@ MainView = (function(superClass) {
       auths: auths,
       swaggerOptions: this.options.swaggerOptions
     });
-    return $('#resources').append(resourceView.render().el);
+    return jQuery('#resources').append(resourceView.render().el);
   };
 
   MainView.prototype.clear = function() {
-    return $(this.el).html('');
+    return jQuery(this.el).html('');
   };
 
   return MainView;
@@ -1071,13 +1074,13 @@ OperationView = (function(superClass) {
 
   OperationView.prototype.mouseEnter = function(e) {
     var elem, hgh, pos, scMaxX, scMaxY, scX, scY, wd, x, y;
-    elem = $(this.el).find('.content');
+    elem = jQuery(this.el).find('.content');
     x = e.pageX;
     y = e.pageY;
-    scX = $(window).scrollLeft();
-    scY = $(window).scrollTop();
-    scMaxX = scX + $(window).width();
-    scMaxY = scY + $(window).height();
+    scX = jQuery(window).scrollLeft();
+    scY = jQuery(window).scrollTop();
+    scMaxX = scX + jQuery(window).width();
+    scMaxY = scY + jQuery(window).height();
     wd = elem.width();
     hgh = elem.height();
     if (x + wd > scMaxX) {
@@ -1096,11 +1099,11 @@ OperationView = (function(superClass) {
     pos.top = y;
     pos.left = x;
     elem.css(pos);
-    return $(e.currentTarget.parentNode).find('#api_information_panel').show();
+    return jQuery(e.currentTarget.parentNode).find('#api_information_panel').show();
   };
 
   OperationView.prototype.mouseExit = function(e) {
-    return $(e.currentTarget.parentNode).find('#api_information_panel').hide();
+    return jQuery(e.currentTarget.parentNode).find('#api_information_panel').hide();
   };
 
   OperationView.prototype.render = function() {
@@ -1204,16 +1207,16 @@ OperationView = (function(superClass) {
         signature: this.model.responseClassSignature
       };
     }
-    $(this.el).html(Handlebars.templates.operation(this.model));
+    jQuery(this.el).html(Handlebars.templates.operation(this.model));
     if (signatureModel) {
       responseSignatureView = new SignatureView({
         model: signatureModel,
         tagName: 'div'
       });
-      $('.model-signature', $(this.el)).append(responseSignatureView.render().el);
+      jQuery('.model-signature', jQuery(this.el)).append(responseSignatureView.render().el);
     } else {
       this.model.responseClassSignature = 'string';
-      $('.model-signature', $(this.el)).html(this.model.type);
+      jQuery('.model-signature', jQuery(this.el)).html(this.model.type);
     }
     contentTypeModel = {
       isParam: false
@@ -1245,7 +1248,7 @@ OperationView = (function(superClass) {
     responseContentTypeView = new ResponseContentTypeView({
       model: contentTypeModel
     });
-    $('.response-content-type', $(this.el)).append(responseContentTypeView.render().el);
+    jQuery('.response-content-type', jQuery(this.el)).append(responseContentTypeView.render().el);
     ref4 = this.model.parameters;
     for (p = 0, len3 = ref4.length; p < len3; p++) {
       param = ref4[p];
@@ -1267,7 +1270,7 @@ OperationView = (function(superClass) {
       tagName: 'tr',
       readOnly: this.model.isReadOnly
     });
-    return $('.operation-params', $(this.el)).append(paramView.render().el);
+    return jQuery('.operation-params', jQuery(this.el)).append(paramView.render().el);
   };
 
   OperationView.prototype.addStatusCode = function(statusCode) {
@@ -1276,7 +1279,7 @@ OperationView = (function(superClass) {
       model: statusCode,
       tagName: 'tr'
     });
-    return $('.operation-status', $(this.el)).append(statusCodeView.render().el);
+    return jQuery('.operation-status', jQuery(this.el)).append(statusCodeView.render().el);
   };
 
   OperationView.prototype.submitOperation = function(e) {
@@ -1284,16 +1287,16 @@ OperationView = (function(superClass) {
     if (e != null) {
       e.preventDefault();
     }
-    form = $('.sandbox', $(this.el));
+    form = jQuery('.sandbox', jQuery(this.el));
     error_free = true;
     form.find("input.required").each(function() {
-      $(this).removeClass("error");
-      if (jQuery.trim($(this).val()) === "") {
-        $(this).addClass("error");
-        $(this).wiggle({
+      jQuery(this).removeClass("error");
+      if (jQuery.trim(jQuery(this).val()) === "") {
+        jQuery(this).addClass("error");
+        jQuery(this).wiggle({
           callback: (function(_this) {
             return function() {
-              return $(_this).focus();
+              return jQuery(_this).focus();
             };
           })(this)
         });
@@ -1301,13 +1304,13 @@ OperationView = (function(superClass) {
       }
     });
     form.find("textarea.required").each(function() {
-      $(this).removeClass("error");
-      if (jQuery.trim($(this).val()) === "") {
-        $(this).addClass("error");
-        $(this).wiggle({
+      jQuery(this).removeClass("error");
+      if (jQuery.trim(jQuery(this).val()) === "") {
+        jQuery(this).addClass("error");
+        jQuery(this).wiggle({
           callback: (function(_this) {
             return function() {
-              return $(_this).focus();
+              return jQuery(_this).focus();
             };
           })(this)
         });
@@ -1346,9 +1349,9 @@ OperationView = (function(superClass) {
           map[o.name] = val;
         }
       }
-      opts.responseContentType = $("div select[name=responseContentType]", $(this.el)).val();
-      opts.requestContentType = $("div select[name=parameterContentType]", $(this.el)).val();
-      $(".response_throbber", $(this.el)).show();
+      opts.responseContentType = jQuery("div select[name=responseContentType]", jQuery(this.el)).val();
+      opts.requestContentType = jQuery("div select[name=parameterContentType]", jQuery(this.el)).val();
+      jQuery(".response_throbber", jQuery(this.el)).show();
       if (isFileUpload) {
         return this.handleFileUpload(map, form);
       } else {
@@ -1393,13 +1396,13 @@ OperationView = (function(superClass) {
     for (p = 0, len3 = ref4.length; p < len3; p++) {
       el = ref4[p];
       if (typeof el.files[0] !== 'undefined') {
-        bodyParam.append($(el).attr('name'), el.files[0]);
+        bodyParam.append(jQuery(el).attr('name'), el.files[0]);
         params += 1;
       }
     }
     this.invocationUrl = this.model.supportHeaderParams() ? (headerParams = this.model.getHeaderParams(map), delete headerParams['Content-Type'], this.model.urlify(map, false)) : this.model.urlify(map, true);
-    $(".request_url", $(this.el)).html("<pre></pre>");
-    $(".request_url pre", $(this.el)).text(this.invocationUrl);
+    jQuery(".request_url", jQuery(this.el)).html("<pre></pre>");
+    jQuery(".request_url pre", jQuery(this.el)).text(this.invocationUrl);
     obj = {
       type: this.model.method,
       url: this.invocationUrl,
@@ -1484,14 +1487,14 @@ OperationView = (function(superClass) {
     if (e != null) {
       e.preventDefault();
     }
-    $(".response", $(this.el)).slideUp();
-    return $(".response_hider", $(this.el)).fadeOut();
+    jQuery(".response", jQuery(this.el)).slideUp();
+    return jQuery(".response_hider", jQuery(this.el)).fadeOut();
   };
 
   OperationView.prototype.showResponse = function(response) {
     var prettyJson;
     prettyJson = JSON.stringify(response, null, "\t").replace(/\n/g, "<br>");
-    return $(".response_body", $(this.el)).html(escape(prettyJson));
+    return jQuery(".response_body", jQuery(this.el)).html(escape(prettyJson));
   };
 
   OperationView.prototype.showErrorStatus = function(data, parent) {
@@ -1592,11 +1595,11 @@ OperationView = (function(superClass) {
         contentType = contentType.split(";")[0].trim();
       }
     }
-    $(".response_body", $(this.el)).removeClass('json');
-    $(".response_body", $(this.el)).removeClass('xml');
+    jQuery(".response_body", jQuery(this.el)).removeClass('json');
+    jQuery(".response_body", jQuery(this.el)).removeClass('xml');
     if (!content) {
-      code = $('<code />').text("no content");
-      pre = $('<pre class="json" />').append(code);
+      code = jQuery('<code />').text("no content");
+      pre = jQuery('<pre class="json" />').append(code);
     } else if (contentType === "application/json" || /\+json$/.test(contentType)) {
       json = null;
       try {
@@ -1605,30 +1608,30 @@ OperationView = (function(superClass) {
         e = _error;
         json = "can't parse JSON.  Raw result:\n\n" + content;
       }
-      code = $('<code />').text(json);
-      pre = $('<pre class="json" />').append(code);
+      code = jQuery('<code />').text(json);
+      pre = jQuery('<pre class="json" />').append(code);
     } else if (contentType === "application/xml" || /\+xml$/.test(contentType)) {
-      code = $('<code />').text(this.formatXml(content));
-      pre = $('<pre class="xml" />').append(code);
+      code = jQuery('<code />').text(this.formatXml(content));
+      pre = jQuery('<pre class="xml" />').append(code);
     } else if (contentType === "text/html") {
-      code = $('<code />').html(_.escape(content));
-      pre = $('<pre class="xml" />').append(code);
+      code = jQuery('<code />').html(_.escape(content));
+      pre = jQuery('<pre class="xml" />').append(code);
     } else if (/^image\//.test(contentType)) {
-      pre = $('<img>').attr('src', url);
+      pre = jQuery('<img>').attr('src', url);
     } else {
-      code = $('<code />').text(content);
-      pre = $('<pre class="json" />').append(code);
+      code = jQuery('<code />').text(content);
+      pre = jQuery('<pre class="json" />').append(code);
     }
     response_body = pre;
-    $(".request_url", $(this.el)).html("<pre></pre>");
-    $(".request_url pre", $(this.el)).text(url);
-    $(".response_code", $(this.el)).html("<pre>" + response.status + "</pre>");
-    $(".response_body", $(this.el)).html(response_body);
-    $(".response_headers", $(this.el)).html("<pre>" + _.escape(JSON.stringify(response.headers, null, "  ")).replace(/\n/g, "<br>") + "</pre>");
-    $(".response", $(this.el)).slideDown();
-    $(".response_hider", $(this.el)).show();
-    $(".response_throbber", $(this.el)).hide();
-    response_body_el = $('.response_body', $(this.el))[0];
+    jQuery(".request_url", jQuery(this.el)).html("<pre></pre>");
+    jQuery(".request_url pre", jQuery(this.el)).text(url);
+    jQuery(".response_code", jQuery(this.el)).html("<pre>" + response.status + "</pre>");
+    jQuery(".response_body", jQuery(this.el)).html(response_body);
+    jQuery(".response_headers", jQuery(this.el)).html("<pre>" + _.escape(JSON.stringify(response.headers, null, "  ")).replace(/\n/g, "<br>") + "</pre>");
+    jQuery(".response", jQuery(this.el)).slideDown();
+    jQuery(".response_hider", jQuery(this.el)).show();
+    jQuery(".response_throbber", jQuery(this.el)).hide();
+    response_body_el = jQuery('.response_body', jQuery(this.el))[0];
     opts = this.options.swaggerOptions;
     if (opts.highlightSizeThreshold && response.data.length > opts.highlightSizeThreshold) {
       return response_body_el;
@@ -1639,7 +1642,7 @@ OperationView = (function(superClass) {
 
   OperationView.prototype.toggleOperationContent = function() {
     var elem;
-    elem = $('#' + Docs.escapeResourceName(this.parentId + "_" + this.nickname + "_content"));
+    elem = jQuery('#' + Docs.escapeResourceName(this.parentId + "_" + this.nickname + "_content"));
     if (elem.is(':visible')) {
       return Docs.collapseOperation(elem);
     } else {
@@ -1700,8 +1703,8 @@ ParameterContentTypeView = (function(superClass) {
   ParameterContentTypeView.prototype.render = function() {
     var template;
     template = this.template();
-    $(this.el).html(template(this.model));
-    $('label[for=parameterContentType]', $(this.el)).text('Parameter content type:');
+    jQuery(this.el).html(template(this.model));
+    jQuery('label[for=parameterContentType]', jQuery(this.el)).text('Parameter content type:');
     return this;
   };
 
@@ -1863,7 +1866,7 @@ ParameterView = (function(superClass) {
       this.model.isList = true;
     }
     template = this.template();
-    $(this.el).html(template(this.model));
+    jQuery(this.el).html(template(this.model));
     signatureModel = {
       sampleJSON: this.model.sampleJSON,
       isParam: true,
@@ -1874,9 +1877,9 @@ ParameterView = (function(superClass) {
         model: signatureModel,
         tagName: 'div'
       });
-      $('.model-signature', $(this.el)).append(signatureView.render().el);
+      jQuery('.model-signature', jQuery(this.el)).append(signatureView.render().el);
     } else {
-      $('.model-signature', $(this.el)).html(this.model.signature);
+      jQuery('.model-signature', jQuery(this.el)).html(this.model.signature);
     }
     isParam = false;
     if (this.model.isBody) {
@@ -1890,12 +1893,12 @@ ParameterView = (function(superClass) {
       parameterContentTypeView = new ParameterContentTypeView({
         model: contentTypeModel
       });
-      $('.parameter-content-type', $(this.el)).append(parameterContentTypeView.render().el);
+      jQuery('.parameter-content-type', jQuery(this.el)).append(parameterContentTypeView.render().el);
     } else {
       responseContentTypeView = new ResponseContentTypeView({
         model: contentTypeModel
       });
-      $('.response-content-type', $(this.el)).append(responseContentTypeView.render().el);
+      jQuery('.response-content-type', jQuery(this.el)).append(responseContentTypeView.render().el);
     }
     return this;
   };
@@ -1972,7 +1975,7 @@ ResourceView = (function(superClass) {
   ResourceView.prototype.render = function() {
     var counter, i, id, len, methods, operation, ref;
     methods = {};
-    $(this.el).html(Handlebars.templates.resource(this.model));
+    jQuery(this.el).html(Handlebars.templates.resource(this.model));
     ref = this.model.operationsArray;
     for (i = 0, len = ref.length; i < len; i++) {
       operation = ref[i];
@@ -1987,9 +1990,9 @@ ResourceView = (function(superClass) {
       operation.parentId = this.model.id;
       this.addOperation(operation);
     }
-    $('.toggleEndpointList', this.el).click(this.callDocs.bind(this, 'toggleEndpointListForResource'));
-    $('.collapseResource', this.el).click(this.callDocs.bind(this, 'collapseOperationsForResource'));
-    $('.expandResource', this.el).click(this.callDocs.bind(this, 'expandOperationsForResource'));
+    jQuery('.toggleEndpointList', this.el).click(this.callDocs.bind(this, 'toggleEndpointListForResource'));
+    jQuery('.collapseResource', this.el).click(this.callDocs.bind(this, 'collapseOperationsForResource'));
+    jQuery('.expandResource', this.el).click(this.callDocs.bind(this, 'expandOperationsForResource'));
     return this;
   };
 
@@ -2003,7 +2006,7 @@ ResourceView = (function(superClass) {
       swaggerOptions: this.options.swaggerOptions,
       auths: this.auths
     });
-    $('.endpoints', $(this.el)).append(operationView.render().el);
+    jQuery('.endpoints', jQuery(this.el)).append(operationView.render().el);
     return this.number++;
   };
 
@@ -2032,8 +2035,8 @@ ResponseContentTypeView = (function(superClass) {
   ResponseContentTypeView.prototype.render = function() {
     var template;
     template = this.template();
-    $(this.el).html(template(this.model));
-    $('label[for=responseContentType]', $(this.el)).text('Response Content Type');
+    jQuery(this.el).html(template(this.model));
+    jQuery('label[for=responseContentType]', jQuery(this.el)).text('Response Content Type');
     return this;
   };
 
@@ -2106,11 +2109,11 @@ SignatureView = (function(superClass) {
   SignatureView.prototype.render = function() {
     var template;
     template = this.template();
-    $(this.el).html(template(this.model));
+    jQuery(this.el).html(template(this.model));
     this.switchToSnippet();
     this.isParam = this.model.isParam;
     if (this.isParam) {
-      $('.notice', $(this.el)).text('Click to set as parameter value');
+      jQuery('.notice', jQuery(this.el)).text('Click to set as parameter value');
     }
     return this;
   };
@@ -2123,20 +2126,20 @@ SignatureView = (function(superClass) {
     if (e != null) {
       e.preventDefault();
     }
-    $(".snippet", $(this.el)).hide();
-    $(".description", $(this.el)).show();
-    $('.description-link', $(this.el)).addClass('selected');
-    return $('.snippet-link', $(this.el)).removeClass('selected');
+    jQuery(".snippet", jQuery(this.el)).hide();
+    jQuery(".description", jQuery(this.el)).show();
+    jQuery('.description-link', jQuery(this.el)).addClass('selected');
+    return jQuery('.snippet-link', jQuery(this.el)).removeClass('selected');
   };
 
   SignatureView.prototype.switchToSnippet = function(e) {
     if (e != null) {
       e.preventDefault();
     }
-    $(".description", $(this.el)).hide();
-    $(".snippet", $(this.el)).show();
-    $('.snippet-link', $(this.el)).addClass('selected');
-    return $('.description-link', $(this.el)).removeClass('selected');
+    jQuery(".description", jQuery(this.el)).hide();
+    jQuery(".snippet", jQuery(this.el)).show();
+    jQuery('.snippet-link', jQuery(this.el)).addClass('selected');
+    return jQuery('.description-link', jQuery(this.el)).removeClass('selected');
   };
 
   SignatureView.prototype.snippetToTextArea = function(e) {
@@ -2145,8 +2148,8 @@ SignatureView = (function(superClass) {
       if (e != null) {
         e.preventDefault();
       }
-      textArea = $('textarea', $(this.el.parentNode.parentNode.parentNode));
-      if ($.trim(textArea.val()) === '') {
+      textArea = jQuery('textarea', jQuery(this.el.parentNode.parentNode.parentNode));
+      if (jQuery.trim(textArea.val()) === '') {
         return textArea.val(this.model.sampleJSON);
       }
     }
@@ -2193,7 +2196,7 @@ StatusCodeView = (function(superClass) {
   StatusCodeView.prototype.render = function() {
     var responseModel, responseModelView, template;
     template = this.template();
-    $(this.el).html(template(this.model));
+    jQuery(this.el).html(template(this.model));
     if (swaggerUi.api.models.hasOwnProperty(this.model.responseModel)) {
       responseModel = {
         sampleJSON: JSON.stringify(swaggerUi.api.models[this.model.responseModel].createJSONSample(), null, 2),
@@ -2204,9 +2207,9 @@ StatusCodeView = (function(superClass) {
         model: responseModel,
         tagName: 'div'
       });
-      $('.model-signature', this.$el).append(responseModelView.render().el);
+      jQuery('.model-signature', this.$el).append(responseModelView.render().el);
     } else {
-      $('.model-signature', this.$el).html('');
+      jQuery('.model-signature', this.$el).html('');
     }
     return this;
   };
